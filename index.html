@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tokyo Train Guide</title>
+<style>
+:root{
+  --bg:#f3f5f7; --card:#ffffff; --ink:#17212b; --sub:#51606f; --line:#d5dce3;
+  --blue:#0a4fa3; --blue-d:#073a79; --sky:#2f86d6; --orange:#d9560f; --red:#b8281e; --green:#1f7a4d; --gray:#dde3e9; --gold:#f2b632;
+}
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+h1,h2,h3{line-height:1.2;text-wrap:balance;margin:0}
+p{margin:0 0 12px;text-wrap:pretty}
+a{color:var(--blue);text-underline-offset:3px}
+a:focus-visible,summary:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+svg{display:block;width:100%;height:auto}
+
+/* hero */
+.hero{background:var(--sky);color:#fff;padding-top:40px}
+.hero .kicker{font-size:14px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;margin-bottom:12px}
+.hero h1{font-size:46px;font-weight:900;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero .lede{font-size:18px;margin:16px 0 0;max-width:30em;font-weight:600}
+.hero .scene{margin-top:8px}
+
+/* answer */
+.answer{padding:36px 0 8px}
+.answer h2{font-size:30px;font-weight:900;color:var(--blue-d);margin-bottom:10px}
+.facts{display:grid;gap:0;margin-top:18px}
+.fact{padding:14px 0;border-top:3px solid var(--blue);display:flex;flex-direction:column}
+.fact b{font-size:34px;line-height:1.1;font-weight:900;color:var(--blue-d);font-variant-numeric:tabular-nums}
+.fact span{color:var(--sub);font-size:15px;margin-top:4px}
+.note{background:#fff3e8;border-left:5px solid var(--orange);padding:14px 16px;font-size:15px;margin:16px 0}
+
+section{padding:40px 0}
+section.wrap{padding-top:40px;padding-bottom:40px}
+h2{font-size:28px;font-weight:900;margin-bottom:8px}
+.sub{color:var(--sub);margin-bottom:20px}
+.band{background:var(--blue);color:#fff}
+.band .sub{color:#d3e3f8}
+.band a{color:#fff}
+.cap{font-size:13px;color:var(--sub);margin-top:10px}
+.band .cap{color:#c4d8f3}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px;margin-top:12px}
+.legend i{display:inline-block;width:14px;height:14px;vertical-align:-2px;margin-right:6px}
+
+table{width:100%;border-collapse:collapse;font-size:16px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:11px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;color:var(--sub);font-weight:700}
+td.n{text-align:right;white-space:nowrap;font-weight:800}
+
+/* ways */
+.path{background:var(--card);padding:20px 18px 10px;margin-bottom:14px}
+.path .head{display:flex;gap:14px;align-items:center;margin-bottom:12px}
+.path .ico{flex:none;width:56px;height:56px}
+.path h3{font-size:21px;font-weight:900}
+.tag{display:block;font-size:13px;font-weight:800;color:var(--blue);margin-bottom:2px}
+.tag.o{color:var(--orange)}
+.tag.g{color:var(--green)}
+ol,ul{margin:6px 0 12px;padding-left:22px}
+li{margin-bottom:7px}
+.steps{list-style:none;padding:0;margin:8px 0 12px}
+.steps li{display:flex;gap:12px;align-items:flex-start}
+.steps svg{flex:none;width:40px;height:40px}
+.steps span{padding-top:7px}
+
+.signs{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
+.sign{background:var(--ink);color:#fff;padding:9px 14px;font-weight:800;font-size:17px}
+.sign small{display:block;font-weight:400;font-size:13px;opacity:.8}
+details{background:var(--card);margin-bottom:8px}
+summary{cursor:pointer;padding:15px 16px;font-weight:800;display:flex;gap:12px;align-items:center}
+summary svg{width:36px;height:36px;flex:none}
+details ul{padding:0 16px 0 38px}
+.unk{background:var(--card);padding:18px}
+.src{font-size:14px}
+.src li{margin-bottom:8px;overflow-wrap:anywhere}
+footer{padding:28px 0 52px;color:var(--sub);font-size:14px}
+
+@media(min-width:680px){
+  .hero h1{font-size:68px}
+  .facts{grid-template-columns:repeat(3,1fr);gap:22px}
+  .ways{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .path{margin:0}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- shared drawings -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="local" viewBox="0 0 300 76">
+      <path d="M120 2L150 12M180 2L150 12" stroke="#17212b" stroke-width="3" fill="none"/>
+      <rect x="6" y="12" width="288" height="48" rx="9" fill="#fff"/>
+      <rect x="6" y="34" width="288" height="10" fill="currentColor"/>
+      <g fill="#17212b"><rect x="20" y="20" width="20" height="10" rx="2"/><rect x="118" y="20" width="20" height="10" rx="2"/><rect x="162" y="20" width="20" height="10" rx="2"/><rect x="260" y="20" width="20" height="10" rx="2"/></g>
+      <g fill="none" stroke="#17212b" stroke-width="2.5"><rect x="52" y="18" width="24" height="34" rx="2"/><rect x="224" y="18" width="24" height="34" rx="2"/></g>
+      <rect x="6" y="60" width="288" height="6" fill="#17212b"/>
+      <rect x="26" y="66" width="34" height="6" fill="#17212b"/><rect x="240" y="66" width="34" height="6" fill="#17212b"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Tokyo Trains</div>
+    <h1>Tokyo by train,<br><em>one tap at a time</em></h1>
+    <p class="lede">One prepaid card, tapped at the gate, covers nearly every train, subway and bus in the city. This is the version I give my guests: how to get the card, how to pass the gates, and how to find the right train. Everything is checked against the operators' official pages, with sources linked.</p>
+  </div>
+  <div class="scene">
+    <svg viewBox="0 0 340 250" preserveAspectRatio="xMidYMax slice" role="img" aria-label="A city train crossing Tokyo on an elevated track, rooftops and a station sign below">
+      <rect width="340" height="250" fill="#2f86d6"/>
+      <circle cx="52" cy="50" r="26" fill="#f2b632"/>
+      <g fill="#2b5a99"><rect x="196" y="66" width="34" height="104"/><rect x="238" y="44" width="28" height="126"/><rect x="274" y="82" width="40" height="88"/><rect x="150" y="92" width="38" height="78"/></g>
+      <g fill="#1d3f6e"><rect x="-6" y="104" width="44" height="66"/><rect x="44" y="84" width="30" height="86"/><rect x="82" y="112" width="52" height="58"/><rect x="300" y="118" width="46" height="52"/></g>
+      <g fill="#f2b632" opacity=".85"><rect x="52" y="96" width="6" height="8"/><rect x="64" y="96" width="6" height="8"/><rect x="52" y="112" width="6" height="8"/><rect x="206" y="80" width="6" height="8"/><rect x="218" y="80" width="6" height="8"/><rect x="248" y="60" width="6" height="8"/><rect x="284" y="96" width="6" height="8"/><rect x="296" y="96" width="6" height="8"/></g>
+      <path d="M-10 170H350" stroke="#17212b" stroke-width="5"/>
+      <path d="M-10 182H350" stroke="#17212b" stroke-width="3" opacity=".55"/>
+      <use href="#local" x="30" y="86" width="280" height="71" style="color:#0a4fa3"/>
+      <path d="M-10 190Q70 176 150 186T350 184V250H-10Z" fill="#1f7a4d"/>
+      <path d="M-10 216Q90 202 180 212T350 208V250H-10Z" fill="#18633e"/>
+      <rect x="238" y="188" width="7" height="44" fill="#17212b"/>
+      <rect x="216" y="182" width="52" height="26" fill="#17212b"/>
+      <text x="242" y="200" font-size="13" font-weight="900" fill="#fff" text-anchor="middle" font-family="-apple-system,Helvetica,Arial,sans-serif">Z04</text>
+      <g stroke="#17212b" stroke-width="2.5" fill="none" opacity=".7"><path d="M118 40Q124 34 130 40Q136 34 142 40"/><path d="M282 26Q287 21 292 26Q297 21 302 26"/></g>
+    </svg>
+  </div>
+</header>
+
+<main>
+  <div class="answer wrap">
+    <h2>Short answer: get one Suica, and tap.</h2>
+    <p>One IC card is all you need. With a Suica or a PASMO you tap through the gates on JR trains, on both subways, and on most private railways and buses in Tokyo. No fare charts, no paper tickets, nothing to insert. The same card also pays at convenience stores, vending machines and station lockers.</p>
+
+    <svg viewBox="0 0 340 150" role="img" aria-label="IC card graphic: tap to ride, balance up to 20,000 yen, deposit 500 yen or none" style="margin:18px 0 6px">
+      <g font-family="-apple-system,Helvetica,Arial,sans-serif">
+        <path d="M0 0H340V58A12 12 0 0 0 340 82V150H0V82A12 12 0 0 0 0 58Z" fill="#fff"/>
+        <path d="M0 0H340V10H0Z" fill="#0a4fa3"/>
+        <text x="20" y="48" font-size="30" font-weight="900" fill="#17212b">IC card</text>
+        <text x="20" y="66" font-size="14" font-weight="700" fill="#51606f">Suica ・ PASMO</text>
+        <g fill="none" stroke="#0a4fa3" stroke-width="4" stroke-linecap="round"><path d="M272 30Q284 42 272 54"/><path d="M286 22Q306 42 286 62"/><circle cx="260" cy="42" r="4" fill="#0a4fa3" stroke="none"/></g>
+        <line x1="20" y1="78" x2="320" y2="78" stroke="#d5dce3" stroke-width="2" stroke-dasharray="5 6"/>
+        <text x="20" y="106" font-size="13" font-weight="700" fill="#51606f">HOW YOU RIDE</text>
+        <text x="20" y="130" font-size="19" font-weight="800" fill="#17212b">Tap in, tap out</text>
+        <text x="196" y="106" font-size="13" font-weight="700" fill="#51606f">BALANCE LIMIT</text>
+        <text x="196" y="130" font-size="19" font-weight="800" fill="#17212b">¥20,000</text>
+      </g>
+    </svg>
+
+    <div class="facts">
+      <div class="fact"><b>1 tap</b><span>Touch the card to the blue reader for about a second, going in and coming out</span></div>
+      <div class="fact"><b>¥500 or none</b><span>Deposit on a plain Suica or PASMO. The visitor cards below carry no deposit</span></div>
+      <div class="fact"><b>¥20,000</b><span>The most any of these cards can hold at one time</span></div>
+    </div>
+    <p class="note"><b>One honest warning:</b> a single ride has to start and finish inside the same IC card area. JR East prints that rule on its own Welcome Suica page. Inside Tokyo, and on day trips out of it, you will never meet the rule — but one card is not a way to ride across regions.</p>
+  </div>
+
+  <section class="band">
+    <div class="wrap">
+      <h2>Through the gate in three moves</h2>
+      <p class="sub">The gates look strict and are actually simple. Look for these signs.</p>
+      <div class="signs">
+        <div class="sign">改札<small>Ticket gate</small></div>
+        <div class="sign">精算機<small>Fare adjustment machine</small></div>
+        <div class="sign">出口<small>Exit</small></div>
+      </div>
+      <svg viewBox="0 0 340 330" role="img" aria-label="Gate steps: tap in, ride, tap out" style="margin-top:18px">
+        <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#f2b632"/></marker></defs>
+        <g font-family="-apple-system,Helvetica,Arial,sans-serif">
+          <rect x="0" y="0" width="340" height="86" fill="#17212b"/>
+          <text x="16" y="34" font-size="19" font-weight="900" fill="#fff">1. Tap in</text>
+          <text x="16" y="60" font-size="15" fill="#fff" opacity=".85">Touch the reader. Nothing goes into a slot</text>
+          <path d="M170 90L170 114" stroke="#f2b632" stroke-width="5" marker-end="url(#a)"/>
+          <rect x="0" y="122" width="340" height="86" fill="#fff"/>
+          <text x="16" y="156" font-size="19" font-weight="900" fill="#17212b">2. Ride</text>
+          <text x="16" y="182" font-size="15" fill="#17212b">The fare is not decided yet. Keep the card handy</text>
+          <path d="M170 212L170 236" stroke="#f2b632" stroke-width="5" marker-end="url(#a)"/>
+          <rect x="0" y="244" width="340" height="86" fill="#f2b632"/>
+          <text x="16" y="278" font-size="19" font-weight="900" fill="#17212b">3. Tap out</text>
+          <text x="16" y="304" font-size="15" fill="#17212b">The fare comes off. Your balance shows on the gate</text>
+        </g>
+      </svg>
+      <p class="cap">If the gate beeps and stays shut, do not push through. Low balance is the usual reason: top up at the fare adjustment machine by the gates before you try again. A card buried in a holder with other cards, or a gate that misread you last time, are the other causes JR East lists — the staffed gate at the end of the row fixes all of them.</p>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <h2>Three ways to get your card</h2>
+    <p class="sub">Same tap at the gate, three different cards. Pick by how long you are staying.</p>
+    <div class="ways">
+
+      <div class="path">
+        <div class="head">
+          <svg class="ico" viewBox="0 0 56 56" aria-hidden="true"><rect width="56" height="56" rx="13" fill="#0a4fa3"/><rect x="17" y="8" width="22" height="40" rx="4" fill="#fff"/><rect x="21" y="15" width="14" height="3" fill="#0a4fa3"/><g fill="none" stroke="#0a4fa3" stroke-width="2.5" stroke-linecap="round"><path d="M24 26Q28 30 24 34"/><path d="M29 22Q37 30 29 38"/><circle cx="22" cy="30" r="1.8" fill="#0a4fa3" stroke="none"/></g></svg>
+          <div><span class="tag">On your phone, no queue</span><h3>Welcome Suica Mobile</h3></div>
+        </div>
+        <p>JR East's official app for visitors, in English. It puts a Suica on your iPhone, so there is nothing to queue for and no deposit to pay.</p>
+        <ul class="steps">
+          <li><svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="9" fill="#dde3e9"/><rect x="13" y="7" width="14" height="26" rx="3" fill="none" stroke="#17212b" stroke-width="2.5"/><rect x="17" y="28" width="6" height="2.5" fill="#17212b"/></svg><span>Download the app and issue the card inside it. iPhone on iOS 17.2 or later, or a recent Apple Watch.</span></li>
+          <li><svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="9" fill="#dde3e9"/><rect x="7" y="11" width="26" height="18" rx="3" fill="#17212b"/><rect x="7" y="16" width="26" height="4" fill="#dde3e9"/><rect x="10" y="23" width="9" height="3" fill="#dde3e9"/></svg><span>Top up inside the app with Apple Pay. The balance is capped at ¥20,000, like every Suica.</span></li>
+          <li><svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="9" fill="#dde3e9"/><path d="M20 7L31 11V20Q31 29 20 34Q9 29 9 20V11Z" fill="#17212b"/><path d="M14 20L19 25L27 15" fill="none" stroke="#fff" stroke-width="3"/></svg><span>It stays valid for 180 days from the day you issue it.</span></li>
+          <li><svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="9" fill="#dde3e9"/><use href="#local" x="4" y="12" width="32" height="16" style="color:#0a4fa3"/></svg><span>Tap the phone at the gate exactly like a card. No need to open the app.</span></li>
+        </ul>
+        <p>Two honest catches: there is no Android version, and the balance cannot be refunded. JR East also warns that in some countries the app can only be set up after you arrive in Japan. A plain Suica can live in Apple Wallet instead — the app is simply the one built for a short trip.</p>
+      </div>
+
+      <div class="path">
+        <div class="head">
+          <svg class="ico" viewBox="0 0 56 56" aria-hidden="true"><rect width="56" height="56" rx="13" fill="#d9560f"/><rect x="9" y="15" width="38" height="26" rx="4" fill="#fff"/><rect x="9" y="22" width="38" height="5" fill="#d9560f"/><text x="28" y="37" font-size="10" font-weight="900" fill="#d9560f" text-anchor="middle" font-family="-apple-system,Helvetica,Arial,sans-serif">28 DAYS</text></svg>
+          <div><span class="tag o">At the airport or a big station</span><h3>Welcome Suica, the red card</h3></div>
+        </div>
+        <p>The visitor-only plastic card, sold by JR East. In principle one per person, and you can take it home as a souvenir afterwards.</p>
+        <ul>
+          <li>Sold at JR EAST Travel Service Centers — Narita Airport, Haneda Airport Terminal 3, Tokyo, Shinjuku, Shibuya, Ikebukuro, Ueno and more — and at the red Welcome Suica vending machines.</li>
+          <li>Choose ¥1,000, ¥2,000, ¥3,000, ¥4,000, ¥5,000 or ¥10,000. Every yen is spendable: there is no deposit.</li>
+          <li>Valid for 28 days counting the day you buy it. It dies on day 29.</li>
+          <li>The balance is never refunded, so load little and top up as you go.</li>
+          <li>Top-ups are cash only, at ticket machines and fare adjustment machines. A credit card cannot charge this card.</li>
+          <li>Keep the reference paper that comes with it. Your real expiry date is printed there — the date stamped on the card itself is not it.</li>
+        </ul>
+      </div>
+
+      <div class="path">
+        <div class="head">
+          <svg class="ico" viewBox="0 0 56 56" aria-hidden="true"><rect width="56" height="56" rx="13" fill="#1f7a4d"/><rect x="9" y="15" width="38" height="26" rx="4" fill="#fff"/><rect x="9" y="22" width="38" height="5" fill="#1f7a4d"/><rect x="14" y="32" width="12" height="3" fill="#1f7a4d"/></svg>
+          <div><span class="tag g">Staying longer, or coming back</span><h3>A plain Suica or PASMO</h3></div>
+        </div>
+        <p>The standard cards residents use. No 28-day clock, and worth it if Tokyo is not a one-time trip.</p>
+        <ul>
+          <li>A ¥500 deposit is included in the first price you pay at the machine.</li>
+          <li>Suica comes from JR East station ticket machines. PASMO comes from subway and private-railway station machines and counters — each card is sold by its own operators, not at JR stations.</li>
+          <li>The card only expires after 10 years without use.</li>
+          <li>Leaving for good? Hand the card back — Suica at a JR East station, PASMO at a PASMO operator — and your balance comes back minus a ¥220 handling fee, with the ¥500 deposit returned in full.</li>
+        </ul>
+      </div>
+    </div>
+
+    <details style="margin-top:14px">
+      <summary><svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="8" fill="#17212b"/><circle cx="18" cy="13" r="5" fill="#fff"/><path d="M8 30Q8 21 18 21Q28 21 28 30Z" fill="#fff"/></svg>Riding with children?</summary>
+      <ul>
+        <li>JR East's rule: children aged 6 and over need a ticket or a card of their own. One card taps one person through.</li>
+        <li>Ages 6 to 11 ride at child fares, roughly half price. From 12, the adult fare applies.</li>
+        <li>Child versions of the cards exist — Welcome Suica is sold in adult and child versions — so ask at the same counter or machine.</li>
+      </ul>
+    </details>
+  </section>
+
+  <section class="wrap" style="padding-top:8px">
+    <h2>Finding your train</h2>
+    <p class="sub">You do not need to read Japanese to do this. You need a color, a letter and a number.</p>
+    <div class="signs">
+      <div class="sign">のりかえ<small>Transfer</small></div>
+      <div class="sign">出口<small>Exit</small></div>
+      <div class="sign">女性専用車<small>Women-only car</small></div>
+    </div>
+    <p style="margin-top:14px">Every subway line carries a color and a letter, and every station on it carries a number. The circle on the platform sign tells you all three at a glance.</p>
+    <svg viewBox="0 0 340 96" role="img" aria-label="A platform sign for the Hanzomon Line: purple circle with the letter Z, station number 04, Hanzomon, trains for Oshiage" style="margin:14px 0 6px">
+      <g font-family="-apple-system,Helvetica,Arial,sans-serif">
+        <rect x="0" y="0" width="340" height="96" fill="#17212b"/>
+        <circle cx="40" cy="48" r="26" fill="#7d5ba6"/>
+        <text x="40" y="57" font-size="26" font-weight="900" fill="#fff" text-anchor="middle">Z</text>
+        <text x="76" y="44" font-size="24" font-weight="900" fill="#fff">04</text>
+        <text x="76" y="68" font-size="15" fill="#fff" opacity=".85">Hanzomon 半蔵門</text>
+        <text x="324" y="44" font-size="15" font-weight="800" fill="#f2b632" text-anchor="end">for Oshiage</text>
+        <text x="324" y="68" font-size="13" fill="#fff" opacity=".85" text-anchor="end">押上方面</text>
+      </g>
+    </svg>
+    <table>
+      <thead><tr><th>Line</th><th>Mark</th><th>Color</th></tr></thead>
+      <tbody>
+        <tr><td>Ginza Line</td><td>G</td><td>Orange</td></tr>
+        <tr><td>Marunouchi Line</td><td>M</td><td>Red</td></tr>
+        <tr><td>Hanzomon Line</td><td>Z</td><td>Purple</td></tr>
+        <tr><td>Toei Asakusa Line</td><td>A</td><td>Rose red</td></tr>
+        <tr><td>JR Yamanote Line</td><td>JY (a square, not a circle)</td><td>Green</td></tr>
+      </tbody>
+    </table>
+    <ul style="margin-top:16px">
+      <li><b>Match the letter and the color, not the name.</b> The station name in Japanese is the last thing to check, not the first.</li>
+      <li><b>Numbers climb in one direction.</b> Standing at Z04 and heading for Z12, you want the platform where the numbers go up. The sign at the end of the platform lists the next stations that way.</li>
+      <li><b>Direction means destination.</b> Trains are named by where they end up. The departure board and the front of the train show that last station — and so does Google Maps, which is why I tell guests to plan the route there and then simply match what the station shows.</li>
+      <li><b>JR wears squares.</b> The Yamanote loop is JY in a green square, and it touches nearly every central station. If you can find the loop, you can find your way home.</li>
+      <li><b>At the far end, exits beat station names.</b> Big stations have dozens of exits. Google Maps names the best one; the yellow exit signs inside the station will walk you to it.</li>
+    </ul>
+  </section>
+
+  <section class="wrap" style="padding-top:8px">
+    <h2>Changing trains</h2>
+    <p class="sub">Most changes are a walk, not a new ticket. Your card handles the money.</p>
+    <ul>
+      <li><b>Same station, same company:</b> follow the color of your next line. You stay inside the gates the whole way.</li>
+      <li><b>JR to subway, or subway to JR:</b> look for the transfer gate, often orange, and tap again as you pass it. The two fares are settled together on your card.</li>
+      <li><b>Big stations are small hikes.</b> Changing lines inside Shinjuku, Ikebukuro or Tokyo can take several minutes of walking. My advice: give yourself five spare minutes there, and the change stops feeling like a race.</li>
+    </ul>
+    <p class="note"><b>Why I say "spare minutes":</b> that is my advice as your guide, not an official rule. The signs will get you there either way — the cushion is for your nerves, and for the coffee you can now stop for.</p>
+  </section>
+
+  <section class="wrap" style="padding-top:8px">
+    <h2>Small things that make the ride easy</h2>
+    <p class="sub">None of these are laws. All of them are how the city quietly agrees to share the trains.</p>
+
+    <details>
+      <summary><svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="8" fill="#17212b"/><rect x="9" y="8" width="18" height="14" rx="3" fill="#fff"/><rect x="13" y="25" width="3" height="5" fill="#fff"/><rect x="20" y="25" width="3" height="5" fill="#fff"/></svg>Priority seats and your phone</summary>
+      <ul>
+        <li>Priority seats sit by the doors, marked, and are meant for older riders, people with disabilities, pregnant riders and anyone with a baby. Sit in one if it is free — and give it up the moment someone who needs it boards.</li>
+        <li>Set your phone to silent and do not take calls inside the car. Texting is fine.</li>
+        <li>Near the priority seats during rush hour, both subway operators ask you to switch the phone off completely.</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary><svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="8" fill="#17212b"/><path d="M8 27H28" stroke="#fff" stroke-width="3"/><circle cx="13" cy="19" r="3.5" fill="#fff"/><circle cx="23" cy="19" r="3.5" fill="#fff"/><path d="M10 27V24M16 27V24M20 27V24M26 27V24" stroke="#fff" stroke-width="2.5"/></svg>On the platform, queue like you mean it</summary>
+      <ul>
+        <li>The marks on the platform floor show where the doors will stop. Queue in the lines either side of them.</li>
+        <li>When the train arrives, let everyone off first. Then board and move inside, away from the doors.</li>
+        <li>Backpacks come off your back in a crowded car — hold yours in front of you or between your feet.</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary><svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="8" fill="#17212b"/><circle cx="18" cy="18" r="10" fill="none" stroke="#fff" stroke-width="3"/><path d="M18 12V18L23 21" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>Rush hour is real</summary>
+      <ul>
+        <li>Weekday mornings, roughly 7:30 to 9:30, are the squeeze. Evenings are busy too, but kinder.</li>
+        <li>If your day is flexible, ride after 10 in the morning. The same trip feels like a different city.</li>
+        <li>With a big suitcase or a stroller, that one choice — avoiding the peak — does more for your trip than any other tip on this page.</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary><svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="8" fill="#17212b"/><path d="M23 7A11 11 0 1 0 29 21A13 13 0 0 1 23 7Z" fill="#fff"/></svg>Last trains come early</summary>
+      <ul>
+        <li>Tokyo goes to bed early for a big city: most lines finish around midnight, and there is no night service behind them.</li>
+        <li>The exact last train differs by station and line. Check it in your route app before a late dinner, not after.</li>
+        <li>Miss it and the options are a taxi or a long walk — both are more expensive than the glance at the timetable.</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary><svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="8" fill="#17212b"/><rect x="9" y="12" width="18" height="16" rx="2" fill="#fff"/><path d="M14 12V9H22V12" fill="none" stroke="#fff" stroke-width="2.5"/></svg>Big suitcases on city trains</summary>
+      <ul>
+        <li>City trains have no baggage reservation and no luggage car — that system belongs to the Shinkansen. A suitcase rides free, and it stays with you.</li>
+        <li>Stand it by the doors, keep the aisle clear, and travel outside rush hour when you can.</li>
+        <li>Station coin lockers are the better answer for a free afternoon: many of them take the same IC card as payment and as the key.</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary><svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="8" fill="#b8281e"/><circle cx="18" cy="13" r="5" fill="#fff"/><path d="M8 30Q8 21 18 21Q28 21 28 30Z" fill="#fff"/></svg>The women-only car</summary>
+      <ul>
+        <li>On weekday mornings, some lines set one car aside for women. Tokyo Metro runs them from the first train until about 9:30; Toei runs them on the Shinjuku and Oedo lines.</li>
+        <li>Pink signs on the platform floor and on the car show where it stops and when it applies. Children and passengers who need a caregiver can ride too.</li>
+        <li>Outside the signed hours, the car is open to everyone.</li>
+      </ul>
+    </details>
+  </section>
+
+  <section class="wrap" style="padding-top:8px">
+    <h2>What I could not confirm</h2>
+    <p class="sub">I left these out instead of guessing.</p>
+    <div class="unk">
+      <ul>
+        <li>Whether an Android phone bought outside Japan can carry a Suica. The visitor app is iPhone only, and JR East's English pages do not promise foreign Android phones a card. If your phone is Android, plan on plastic.</li>
+        <li>Whether your own bank card will work for top-ups in the app or in Apple Wallet. That sits between you and your card issuer. Carry some cash: the station machines that charge a physical card take cash anyway.</li>
+        <li>Today's stock of Welcome Suica at each sales point. JR East lists where it is sold and limits it to one per person, but I cannot see the shelves from here.</li>
+        <li>The exact last train from your station. It changes by station and by line, so the departure board and your route app are the source of truth — not this page.</li>
+      </ul>
+      <p style="margin:0">If anything on this page fails you at a gate, the staffed gate at the end of the row is the answer. Show the attendant your card and this page, and it will get sorted.</p>
+    </div>
+  </section>
+
+  <section class="wrap" style="padding-top:8px">
+    <h2>Official sources</h2>
+    <ul class="src">
+      <li><a href="https://www.jreast.co.jp/en/multi/faq/">JR East: FAQ — Suica and Welcome Suica</a></li>
+      <li><a href="https://www.jreast.co.jp/e/downloads/pdf/welcomesuica_e.pdf">JR East: Welcome Suica, the visitor card (English leaflet)</a></li>
+      <li><a href="https://www.jreast.co.jp/en/multi/welcomesuicamobile/">JR East: Welcome Suica Mobile</a></li>
+      <li><a href="https://www.jreast.co.jp/multi/pass/suica.html">JR East: Suica</a></li>
+      <li><a href="https://www.pasmo.co.jp/en/use/">PASMO: buying and using a PASMO card</a></li>
+      <li><a href="https://www.pasmo.co.jp/visitors/en/">PASMO: for international visitors</a></li>
+      <li><a href="https://www.tokyometro.jp/en/tips/considerations/index.html">Tokyo Metro: things to consider when riding the subway</a></li>
+      <li><a href="https://www.kotsu.metro.tokyo.jp/eng/guides/conduct/">Toei Transportation: passenger conduct and manners</a></li>
+    </ul>
+  </section>
+</main>
+<footer><div class="wrap">Checked against the official pages above on November 11, 2026. Sales points and rules can change, so confirm before you buy.</div></footer>
+</body>
+</html>
